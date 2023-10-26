@@ -1,0 +1,26 @@
+/* Styling for the main container for star rating */
+.star-rating {
+  display: inline-block;
+  font-size: 0;
+  background-color: black;
+  width: 150px;
+  height: 35px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Styling for the star that is not selected */
+.star {
+  display: inline-block;
+  font-size: 24px;
+  cursor: pointer;
+  color: #ccc;
+  transition: color 0.2s;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+/* Styling for the star that is selected */
+.star.selected {
+  color: #ffdb58;
+}
