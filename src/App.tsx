@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import StarRating from "./components/StarRating.tsx";
+import { v4 as uuidv4 } from "uuid";
 
-interface RowData {       // Structure of the Data
-  id: number;
+interface InterviewRecord {       // Structure of the Interview Record
+  id: any;
   name: string;
   status: string;
   feedback: string;
@@ -11,44 +12,44 @@ interface RowData {       // Structure of the Data
 }
 
 function App() {
-  const [data, setData] = useState<RowData[]>([   // Assigning the interface and initializing it using React State
-    { id: 1, name: "", status: "", feedback: "", rating: 0 },
+  const [interviewData, setInterviewData] = useState<InterviewRecord[]>([   // Assigning the interface and initializing it using React State
+    { id: uuidv4(), name: "", status: "", feedback: "", rating: 0 },
   ]);
 
-  const addRow = (): void => {   // Adding a row when Add Record is clicked
-    const newRow: RowData = {
-      id: data.length + 1,
+  const addRow = (): void => {   // Adding a record when Add Record is clicked
+    const newRecord: InterviewRecord = {
+      id: uuidv4(),
       name: "",
       status: "",
       feedback: "",
       rating: 0,
     };
-    setData([...data, newRow]);
+    setInterviewData([...interviewData, newRecord]);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>, id: number): void => {
-    const updatedData = data.map((row: RowData) => {  // Method for updating respective field when user enters or updates
-      if (row.id === id) {
-        return { ...row, [e.target.name]: e.target.value };
+    const updatedData = interviewData.map((record: InterviewRecord) => {  // Method for updating respective field when user enters or updates
+      if (record.id === id) {
+        return { ...record, [e.target.name]: e.target.value };
       }
-      return row;
+      return record;
     });
-    setData(updatedData);
+    setInterviewData(updatedData);
   };
 
   const handleStarClick = (id: number, newRating: number): void => {  // Method for updating the star rating when user enters or updates
-    const updatedData = data.map((row) => {
-      if (row.id === id) {
-        return { ...row, rating: newRating };
+    const updatedData = interviewData.map((record) => {
+      if (record.id === id) {
+        return { ...record, rating: newRating };
       }
-      return row;
+      return record;
     });
-    setData(updatedData);
+    setInterviewData(updatedData);
   };
 
   const removeRow = (id: number): void => {  // Method for removing a record
-    const updatedData = data.filter((row) => row.id !== id);
-    setData(updatedData);
+    const updatedData = interviewData.filter((record) => record.id !== id);
+    setInterviewData(updatedData);
   };
 
   return (
@@ -69,24 +70,24 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {/* Mapping over the data to display on the UI */}
-          {data.map((row) => (
-            <tr key={row.id}>
+          {/* Mapping over the interviewData to display on the UI */}
+          {interviewData.map((record) => (
+            <tr key={record.id}>
               <td>
                 {/* Input field for Name */}
                 <input
                   type="text"
-                  value={row.name}
+                  value={record.name}
                   name="name"
-                  onChange={(e) => handleInputChange(e, row.id)}
+                  onChange={(e) => handleInputChange(e, record.id)}
                 />
               </td>
               <td>
                 {/* Select field for Status */}
                 <select
-                  value={row.status}
+                  value={record.status}
                   name="status"
-                  onChange={(e) => handleInputChange(e, row.id)}
+                  onChange={(e) => handleInputChange(e, record.id)}
                 >
                   <option value="pending">Pending</option>
                   <option value="complete">Complete</option>
@@ -96,22 +97,22 @@ function App() {
                 {/* Input field for Feedback */}
                 <input
                   type="text"
-                  value={row.feedback}
+                  value={record.feedback}
                   name="feedback"
-                  onChange={(e) => handleInputChange(e, row.id)}
+                  onChange={(e) => handleInputChange(e, record.id)}
                 />
               </td>
               <td>
                 {/* Rendering a React Component for displaying Stars for Rating */}
                 <StarRating
-                  rating={row.rating}
-                  id={row.id}
+                  rating={record.rating}
+                  id={record.id}
                   onStarClick={handleStarClick}
                 />
               </td>
               <td>
                 {/* Button for removing a record */}
-                <button onClick={() => removeRow(row.id)}>Remove</button>
+                <button onClick={() => removeRow(record.id)}>Remove</button>
               </td>
             </tr>
           ))}
